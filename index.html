@@ -1,0 +1,164 @@
+<html>
+
+<head>
+  <title>冷蔵庫データベース</title>
+  <meta http-equiv="content-type" charset="utf-8">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
+  <link rel="stylesheet" type="text/css" href="./src/css/See-ss.css">
+  <link rel="stylesheet" type="text/css" href="./src/css/style.css">
+</head>
+
+<body>
+  <!--GASの画面を表示させないため-->
+  <iframe src="#" id="fake-target" name="fake-target" style="width:0px; height:0px; border:0px;"></iframe>
+
+  <!-- ローディング -->
+  <div class="loading1" id="loading">
+    <div class="rect1"></div>
+    <div class="rect2"></div>
+    <div class="rect3"></div>
+    <div class="rect4"></div>
+    <div class="rect5"></div>
+  </div>
+
+  <!-- モーダル -->
+  <div id="itemAddModal" class="modal">
+    <div class="modal-background"></div>
+    <div class="modal-card" style="height: 80%;">
+      <header class="modal-card-head">
+        <p class="modal-card-title">アイテム選択</p>
+      </header>
+      <section class="modal-card-body" style="padding-top:10%">
+        <!-- Content ... -->
+        <form id="formID"
+          action="https://script.google.com/macros/s/AKfycbxmvaMI9ZS3WGVN06bG0QeudgiQb3IQ8_xk64JJ8qPZ3hslvm9Ew3K5ihQTEE0oSzMc/exec"
+          method="POST" target="fake-target">
+          <!-- 食品名 -->
+          <div class="field" style="margin-bottom: 20px;">
+            <label class="label">食品名</label>
+            <div class="control has-icons-left has-icons-right">
+              <input id="name" name="name" class="input is-success" type="text">
+            </div>
+          </div>
+          <!-- 賞味期限 -->
+          <div class="field" style="margin-bottom: 20px;">
+            <label class="label">賞味期限</label>
+            <div class="control has-icons-left has-icons-right">
+              <input id="expirationDate" name="expirationDate" class="input is-danger" type="date" min="2021-01-01">
+            </div>
+          </div>
+          <input type="hidden" name="capacity" value="100"><br>
+          <!-- カテゴリー -->
+          <div class="field" style="margin-bottom: 20px;">
+            <label class="label">カテゴリー</label>
+            <div class="control">
+              <div class="select">
+                <select id="category" name="category">
+                  <option value="🥬">🥬野菜</option>
+                  <option value="🥩">🥩肉</option>
+                  <option value="🍮">🍮冷蔵</option>
+                  <option value="🧊">🧊冷凍</option>
+                  <option value="🍄">🍄乾き物</option>
+                  <option value="🤔">🤔その他</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <input name="method" type="hidden" value="update">
+        </form>
+      </section>
+      <footer class="modal-card-foot">
+        <button id="okButton" class="button is-success">追加</button>
+        <button id="cancelAddItem" class="button">キャンセル</button>
+      </footer>
+    </div>
+  </div>
+
+  <!-- 削除ダイアログ -->
+  <article id="deleteDialog" class="message is-info"
+    style="display: none; position: fixed; z-index: 40; width: 100%; top: 0;">
+    <div class="message-body">
+      処理中...
+    </div>
+  </article>
+
+  <!-- ここからコンテンツ -->
+  <div id="contents" style="display:none;">
+
+    <!-- ヘッダ -->
+    <nav class="navbar is-fixed-bottom is-hidden-tablet frp-navber-mobile" id="button-open-mobile-menu"
+      style="top: 0; bottom: auto;">
+      <div class="navbar-start" style="
+        position: absolute;
+        font-weight: 700;
+        margin-top: 0.5rem;"> 
+        <span style="margin: 1rem;">冷蔵庫データベース</span>
+      </div>
+      <div class="navbar-end">
+        <form id="deleteItem"
+        action="https://script.google.com/macros/s/AKfycbxmvaMI9ZS3WGVN06bG0QeudgiQb3IQ8_xk64JJ8qPZ3hslvm9Ew3K5ihQTEE0oSzMc/exec"
+        method="POST" target="fake-target">
+          <span id="deleteButton"
+            class="navbar-item has-text-centered frp-navber-mobile-font"
+            style="position: absolute; right: 0; display: none; color: #3273dc;"
+            onClick="deleteItem()"> 
+            削除
+          </span>
+          <input id="deleteRows" name="deleteRows" type="hidden" value="delete">
+          <input id="method" name="method" type="hidden" value="delete">
+        </form>
+      </div>
+    </nav>
+
+    <!-- フッタ -->
+    <nav class="navbar is-fixed-bottom is-hidden-tablet frp-navber-mobile" id="button-open-mobile-menu"
+      style="background-color: gainsboro; bottom: -20px;">
+      <div class="navbar-start">
+        <button id="addButton" class="button is-link is-outlined"
+          style="position: absolute; right: 0.5rem; font-weight: 700;
+          border-color: initial; height: 2rem; border-color: transparent;">
+          ＋
+        </button>
+      </div>
+      <div class="navbar-end">
+      </div>
+    </nav>
+
+    <!-- パネル -->
+    <section class="contents-section" id="panel" style="margin-top: 3.2rem;">
+      <nav class="panel">
+        <!-- ブロック -->
+        <div class="panel-block">
+          <p class="control has-icons-left">
+            <input class="input" type="text" placeholder="Search" onInput="searchItem(value)">
+            <span class="icon is-left">
+              🔍
+            </span>
+          </p>
+        </div>
+        <!-- タブ -->
+        <p class="panel-tabs">
+          <a onClick="changeTab('All')" class="is-active">All</a>
+          <a onClick="changeTab('野菜')">野菜</a>
+          <a onClick="changeTab('肉')">肉</a>
+          <a onClick="changeTab('冷蔵')">冷蔵</a>
+          <a onClick="changeTab('冷凍')">冷凍</a>
+          <a onClick="changeTab('乾物')">乾物</a>
+          <a onClick="changeTab('その他')">その他</a>
+        </p>
+          <!-- ここにリスト -->
+          <span id="listArea"></span>
+        <div class="panel-block" style="height: 2.25rem;"></div>
+      </nav>
+    </section>
+  </div>
+</body>
+<script type="text/javascript" src="./src/js/module.js"></script>
+<script type="text/javascript" src="./src/js/script.js"></script>
+<script type="text/javascript" src="./src/js/requestData.js"></script>
+<script type="text/javascript" src="./src/js/event.js"></script>
+
+</html>
