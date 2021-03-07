@@ -118,11 +118,17 @@ const deleteItem = () => {
   document.getElementById('deleteRows').value = sendRowData.slice(0, -1);
   document.getElementById('deleteItem').submit();
 
-  // 削除実行中ダイアログを表示
-  document.getElementById('deleteDialog').style.display = 'block';
+  const listArea = document.getElementById('listArea').children;
+  for (let i = listArea.length -1; i >= 0; i--) {
+    if (listCheckbox[i].checked) {
+      listArea[i].remove();
+    }
+  }
+
+
 
   // ページを更新
-  window.setTimeout(() => location.reload(), 1500);
+  // window.setTimeout(() => location.reload(), 1500);
 }
 
 /**
