@@ -166,5 +166,5 @@ const refresh = () => {
 
   window.setTimeout(() => {
     getData();
-  }, 1000);
+  }, 2000);
 }
