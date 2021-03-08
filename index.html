@@ -33,7 +33,7 @@
       </header>
       <section class="modal-card-body" style="padding-top:10%">
         <!-- Content ... -->
-        <form id="formID"
+        <form id="register"
           action="https://script.google.com/macros/s/AKfycbxmvaMI9ZS3WGVN06bG0QeudgiQb3IQ8_xk64JJ8qPZ3hslvm9Ew3K5ihQTEE0oSzMc/exec"
           method="POST" target="fake-target">
           <!-- 食品名 -->
@@ -67,7 +67,8 @@
               </div>
             </div>
           </div>
-          <input name="method" type="hidden" value="update">
+          <input id="sortNumber" name="sortNumber" type="hidden">
+          <input name="method" type="hidden" value="register">
         </form>
       </section>
       <footer class="modal-card-foot">
@@ -79,7 +80,6 @@
 
   <!-- ここからコンテンツ -->
   <div id="contents" style="display:none;">
-
     <!-- ヘッダ -->
     <nav class="navbar is-fixed-bottom is-hidden-tablet frp-navber-mobile" id="button-open-mobile-menu"
       style="top: 0; bottom: auto;">
@@ -109,6 +109,11 @@
     <nav class="navbar is-fixed-bottom is-hidden-tablet frp-navber-mobile" id="button-open-mobile-menu"
       style="background-color: gainsboro; bottom: -20px;">
       <div class="navbar-start">
+        <button onClick="refresh();" id="refreshButton" class="button is-link is-outlined"
+          style="position: absolute; left: 0.5rem; font-weight: 700;
+          border-color: initial; height: 2rem; border-color: transparent;">
+          ↺
+        </button>
         <button id="addButton" class="button is-link is-outlined"
           style="position: absolute; right: 0.5rem; font-weight: 700;
           border-color: initial; height: 2rem; border-color: transparent;">
@@ -118,6 +123,13 @@
       <div class="navbar-end">
       </div>
     </nav>
+
+    <!-- 更新ボタン用 -->
+    <form id="refreshItem"
+    action="https://script.google.com/macros/s/AKfycbxmvaMI9ZS3WGVN06bG0QeudgiQb3IQ8_xk64JJ8qPZ3hslvm9Ew3K5ihQTEE0oSzMc/exec"
+    method="POST" target="fake-target">
+      <input id="method" name="method" type="hidden" value="refresh">
+    </form>
 
     <!-- パネル -->
     <section class="contents-section" id="panel" style="margin-top: 3.2rem;">
@@ -141,6 +153,14 @@
           <a onClick="changeTab('乾物')">乾物</a>
           <a onClick="changeTab('その他')">その他</a>
         </p>
+        <!-- ローディング（更新用） -->
+        <div class="loading1" id="loading2" style="display:none; margin-bottom: 10rem;">
+          <div class="rect1"></div>
+          <div class="rect2"></div>
+          <div class="rect3"></div>
+          <div class="rect4"></div>
+          <div class="rect5"></div>
+        </div>
           <!-- ここにリスト -->
           <span id="listArea"></span>
         <div class="panel-block" style="height: 2.25rem;"></div>
@@ -152,5 +172,5 @@
 <script type="text/javascript" src="./src/js/script.js"></script>
 <script type="text/javascript" src="./src/js/requestData.js"></script>
 <script type="text/javascript" src="./src/js/event.js"></script>
-
+<script type="text/javascript" src="./src/js/sort.js"></script>
 </html>

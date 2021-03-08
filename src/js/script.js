@@ -8,6 +8,16 @@ const categoryMap = {
   "🤔": "その他"    
 };
 
+/**カテゴリーとソート番号の対応 */
+const categorySortNumberMap = {
+  "🥬": "1",
+  "🥩": "2",
+  "🍮": "3",
+  "🧊": "4",
+  "🍄": "5",
+  "🤔": "6"    
+};
+
 /** 保持データ数 */
 let dataLength = '';
 
@@ -36,9 +46,11 @@ const setPanelList = (data) => {
  * アイテムを追加する
  */
 const addListItem = () => {
-  document.getElementById('formID').submit();
-
   const category = document.getElementById('category').value;
+
+  document.getElementById('sortNumber').value = categorySortNumberMap[category];
+  document.getElementById('register').submit();
+
   const name = document.getElementById('name');
   const expirationDate = document.getElementById('expirationDate');
   const viewDate = 
@@ -124,11 +136,6 @@ const deleteItem = () => {
       listArea[i].remove();
     }
   }
-
-
-
-  // ページを更新
-  // window.setTimeout(() => location.reload(), 1500);
 }
 
 /**
@@ -143,4 +150,21 @@ const searchItem = (value) => {
       (~listArea[i].dataset.name.indexOf(value)) ?
       'flex' : 'none';
   }
+}
+
+const refresh = () => {
+  changeTab('All');
+  document.getElementById('refreshItem').submit();
+
+  document.getElementById('loading2').style.display = 'block';
+  document.getElementById('listArea').style.display = 'none';
+
+  const parent = document.getElementById('listArea');
+  while(parent.firstChild){
+    parent.removeChild(parent.firstChild);
+  }
+
+  window.setTimeout(() => {
+    getData();
+  }, 1000);
 }

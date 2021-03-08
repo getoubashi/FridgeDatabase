@@ -4,7 +4,9 @@ const getData = async () => {
   setPanelList(data);
 
   document.getElementById('loading').style.display = 'none';
+  document.getElementById('loading2').style.display = 'none';
   document.getElementById('contents').style.display = 'block';
+  document.getElementById('listArea').style.display = 'block';
 }
 
 getData();
