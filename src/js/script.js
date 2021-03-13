@@ -21,6 +21,8 @@ const categorySortNumberMap = {
 /** 保持データ数 */
 let dataLength = '';
 
+let editMode = false;
+
 /**
  * パネルを設定する
  * @param {object} data 
@@ -43,9 +45,23 @@ const setPanelList = (data) => {
 }
 
 /**
- * アイテムを追加する
+ * 登録用モーダルを生成する
  */
-const addListItem = () => {
+const setRegisterModal = () => {
+  document.getElementById('itemAddModal').insertAdjacentHTML('afterbegin', `${registerModal()}`);
+}
+
+/**
+ * 更新用モーダルを生成する
+ */
+ const setUpdateModal = () => {
+  document.getElementById('itemUpdateModal').insertAdjacentHTML('afterbegin', `${updateModal()}`);
+}
+
+/**
+ * アイテムを登録する
+ */
+const registerItem = () => {
   const category = document.getElementById('category').value;
 
   document.getElementById('sortNumber').value = categorySortNumberMap[category];
@@ -103,17 +119,19 @@ const narrowDown = (tabName) => {
  * チェックボックスをオン
  */
 const checkedItem = () => {
-  const deleteButton = document.getElementById('deleteButton');
-  let visibility = false;
-
-  window.setTimeout(() => {
-    const listCheckbox = document.getElementsByName('listCheckbox');
-    for (let i = 0; i < listCheckbox.length; i++) {
-      if (listCheckbox[i].checked) visibility = true;
-    }
-
-    deleteButton.style.display = visibility ? 'block' : 'none';    
-  }, 100);
+  if (!editMode) {
+    const deleteButton = document.getElementById('deleteButton');
+    let visibility = false;
+  
+    window.setTimeout(() => {
+      const listCheckbox = document.getElementsByName('listCheckbox');
+      for (let i = 0; i < listCheckbox.length; i++) {
+        if (listCheckbox[i].checked) visibility = true;
+      }
+  
+      deleteButton.style.display = visibility ? 'block' : 'none';    
+    }, 100);
+  }
 }
 
 /**
@@ -167,4 +185,50 @@ const refresh = () => {
   window.setTimeout(() => {
     getData();
   }, 2000);
+}
+
+const showUpdateModal = (data) => {
+  if (!editMode) return;
+
+  const updateRow = data.name;
+  const panelData = document.getElementsByName(`panelData${Number(updateRow)}`);
+  const month = new Date(panelData[2].innerText).getMonth() + 1;
+  const viewMonth = month.toString().length == 1 ? '0' + month : month;
+  const day = new Date(panelData[2].innerText).getDate();
+  const viewDay = day.toString().length == 1 ? '0' + day : day;
+
+  document.getElementById('updateModalName').value = panelData[1].innerText;
+  document.getElementById('updateModalDate').value = `${new Date().getFullYear()}-${viewMonth}-${viewDay}`;
+  document.getElementById('updateModalCategory').value = panelData[0].innerText;
+  document.getElementById('updateRow').value = Number(updateRow) + 2;
+
+  const itemUpdateModal = document.getElementById('itemUpdateModal');
+  itemUpdateModal.classList.add('is-active');
+}
+
+const closeUpdateModal = () => {
+  const itemUpdateModal = document.getElementById('itemUpdateModal');
+  itemUpdateModal.classList.remove('is-active');
+  editMode = false;
+}
+
+const updateItem = () => {
+  console.log(document.getElementById('updateModalCategory').value);
+  document.getElementById('updateModalSortNumber').value = categorySortNumberMap[
+    document.getElementById('updateModalCategory').value
+  ]
+  document.getElementById('updateItem').submit();
+
+  const updateRow = document.getElementById('updateRow').value;
+  const panelData = document.getElementsByName(`panelData${Number(updateRow - 2)}`);
+  const exDate = document.getElementById('updateModalDate').value;
+  panelData[0].innerText = document.getElementById('updateModalCategory').value;
+  panelData[1].innerText = document.getElementById('updateModalName').value;
+  panelData[2].innerText = `${new Date(exDate).getMonth()+1}/${new Date(exDate).getDate()}`;
+
+  closeUpdateModal();
+}
+
+const edit = () => {
+  editMode = !editMode;
 }

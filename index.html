@@ -1,5 +1,4 @@
 <html>
-
 <head>
   <title>冷蔵庫データベース</title>
   <meta http-equiv="content-type" charset="utf-8">
@@ -10,7 +9,6 @@
   <link rel="stylesheet" type="text/css" href="./src/css/See-ss.css">
   <link rel="stylesheet" type="text/css" href="./src/css/style.css">
 </head>
-
 <body>
   <!--GASの画面を表示させないため-->
   <iframe src="#" id="fake-target" name="fake-target" style="width:0px; height:0px; border:0px;"></iframe>
@@ -24,64 +22,16 @@
     <div class="rect5"></div>
   </div>
 
-  <!-- モーダル -->
-  <div id="itemAddModal" class="modal">
-    <div class="modal-background"></div>
-    <div class="modal-card" style="height: 80%;">
-      <header class="modal-card-head">
-        <p class="modal-card-title">アイテム選択</p>
-      </header>
-      <section class="modal-card-body" style="padding-top:10%">
-        <!-- Content ... -->
-        <form id="register"
-          action="https://script.google.com/macros/s/AKfycbxmvaMI9ZS3WGVN06bG0QeudgiQb3IQ8_xk64JJ8qPZ3hslvm9Ew3K5ihQTEE0oSzMc/exec"
-          method="POST" target="fake-target">
-          <!-- 食品名 -->
-          <div class="field" style="margin-bottom: 20px;">
-            <label class="label">食品名</label>
-            <div class="control has-icons-left has-icons-right">
-              <input id="name" name="name" class="input is-success" type="text">
-            </div>
-          </div>
-          <!-- 賞味期限 -->
-          <div class="field" style="margin-bottom: 20px;">
-            <label class="label">賞味期限</label>
-            <div class="control has-icons-left has-icons-right">
-              <input id="expirationDate" name="expirationDate" class="input is-danger" type="date" min="2021-01-01">
-            </div>
-          </div>
-          <input type="hidden" name="capacity" value="100"><br>
-          <!-- カテゴリー -->
-          <div class="field" style="margin-bottom: 20px;">
-            <label class="label">カテゴリー</label>
-            <div class="control">
-              <div class="select">
-                <select id="category" name="category">
-                  <option value="🥬">🥬野菜</option>
-                  <option value="🥩">🥩肉</option>
-                  <option value="🍮">🍮冷蔵</option>
-                  <option value="🧊">🧊冷凍</option>
-                  <option value="🍄">🍄乾き物</option>
-                  <option value="🤔">🤔その他</option>
-                </select>
-              </div>
-            </div>
-          </div>
-          <input id="sortNumber" name="sortNumber" type="hidden">
-          <input name="method" type="hidden" value="register">
-        </form>
-      </section>
-      <footer class="modal-card-foot">
-        <button id="okButton" class="button is-success">追加</button>
-        <button id="cancelAddItem" class="button">キャンセル</button>
-      </footer>
-    </div>
-  </div>
+  <!-- 登録用モーダル -->
+  <div id="itemAddModal" class="modal"></div>
+
+  <!-- 更新用モーダル -->
+  <div id="itemUpdateModal" class="modal"></div>
 
   <!-- ここからコンテンツ -->
   <div id="contents" style="display:none;">
     <!-- ヘッダ -->
-    <nav class="navbar is-fixed-bottom is-hidden-tablet frp-navber-mobile" id="button-open-mobile-menu"
+    <nav class="navbar is-fixed-bottom frp-navber-mobile" id="button-open-mobile-menu"
       style="top: 0; bottom: auto;">
       <div class="navbar-start" style="
         position: absolute;
@@ -106,16 +56,23 @@
     </nav>
 
     <!-- フッタ -->
-    <nav class="navbar is-fixed-bottom is-hidden-tablet frp-navber-mobile" id="button-open-mobile-menu"
-      style="background-color: gainsboro; bottom: -20px;">
+    <nav class="navbar is-fixed-bottom frp-navber-mobile" id="button-open-mobile-menu"
+      style="background-color: gainsboro; bottom: -20px; zoom: 1.2;">
       <div class="navbar-start">
         <button onClick="refresh();" id="refreshButton" class="button is-link is-outlined"
           style="position: absolute; left: 0.5rem; font-weight: 700;
           border-color: initial; height: 2rem; border-color: transparent;">
           ↺
         </button>
+        <div style="text-align: center;">
+          <button onClick="edit();" id="edit" class="button is-link is-outlined"
+            style=" font-weight: 700;
+            border-color: initial; height: 2rem; border-color: transparent;">
+            編集
+          </button>
+        </div>
         <button id="addButton" class="button is-link is-outlined"
-          style="position: absolute; right: 0.5rem; font-weight: 700;
+          style="position: fixed; bottom: 0; right: 0.5rem; font-weight: 700;
           border-color: initial; height: 2rem; border-color: transparent;">
           ＋
         </button>
@@ -171,5 +128,6 @@
 <script type="text/javascript" src="./src/js/module.js"></script>
 <script type="text/javascript" src="./src/js/script.js"></script>
 <script type="text/javascript" src="./src/js/requestData.js"></script>
+<script type="text/javascript" src="./src/js/index.js"></script>
 <script type="text/javascript" src="./src/js/event.js"></script>
 </html>

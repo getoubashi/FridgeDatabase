@@ -1,0 +1,4 @@
+getData();
+
+setRegisterModal();
+setUpdateModal();

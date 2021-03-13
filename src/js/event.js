@@ -13,5 +13,5 @@ cancelAddItem.addEventListener('click', () => {
 
 okButton.addEventListener('click', () => {
   itemAddModal.classList.remove('is-active');
-  addListItem();
+  registerItem();
 });

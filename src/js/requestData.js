@@ -8,5 +8,3 @@ const getData = async () => {
   document.getElementById('contents').style.display = 'block';
   document.getElementById('listArea').style.display = 'block';
 }
-
-getData();
