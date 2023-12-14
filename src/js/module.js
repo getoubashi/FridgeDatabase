@@ -66,6 +66,7 @@ const registerModal = () => {
                   <option value="🍮">🍮冷蔵</option>
                   <option value="🧊">🧊冷凍</option>
                   <option value="🍄">🍄乾き物</option>
+                  <option value="🐟">🐟魚</option>
                   <option value="🤔">🤔その他</option>
                 </select>
               </div>
@@ -127,6 +128,7 @@ const updateModal = () => {
                   <option value="🍮">🍮冷蔵</option>
                   <option value="🧊">🧊冷凍</option>
                   <option value="🍄">🍄乾き物</option>
+                  <option value="🐟">🐟魚</option>
                   <option value="🤔">🤔その他</option>
                 </select>
               </div>
