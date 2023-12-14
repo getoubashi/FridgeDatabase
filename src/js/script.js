@@ -2,10 +2,10 @@
 const categoryMap = {
   "🥬": "野菜",
   "🥩": "肉",
+  "🐟": "魚",
   "🍮": "冷蔵",
   "🧊": "冷凍",
   "🍄": "乾物",
-  "🐟": "魚",
   "🤔": "その他"    
 };
 
@@ -13,10 +13,10 @@ const categoryMap = {
 const categorySortNumberMap = {
   "🥬": "1",
   "🥩": "2",
-  "🍮": "3",
-  "🧊": "4",
-  "🍄": "5",
-  "🐟": "6",
+  "🐟": "3",
+  "🍮": "4",
+  "🧊": "5",
+  "🍄": "6",
   "🤔": "7"    
 };
 
@@ -226,7 +226,7 @@ const updateItem = () => {
   const exDate = document.getElementById('updateModalDate').value;
   panelData[0].innerText = document.getElementById('updateModalCategory').value;
   panelData[1].innerText = document.getElementById('updateModalName').value;
-  panelData[2].innerText = `${new Date(exDate).getMonth()+1}/${new Date(exDate).getDate()}`;
+  panelData[2].innerText = exDate === "" ? "" : `${new Date(exDate).getMonth()+1}/${new Date(exDate).getDate()}`;
 
   closeUpdateModal();
 }
